@@ -1,0 +1,45 @@
+<span ref:foo on:mouseover="change()" on:mouseout="clear()">{copy || 'a.'}</span>
+
+<style>
+  ref:foo {
+    display: inline-block;
+  }
+</style>
+
+<script>
+  let interval;
+  const thingsToLoopOver = [
+    'a developer',
+    'an eater',
+    'a 🇵🇷',
+    'a 🇨🇺',
+  ]
+
+  export default {
+    data() {
+      return {
+        index: -1,
+      }
+    },
+    methods: {
+      change(event) {
+        if (!interval) {
+          interval = setInterval(() => {
+            const { index } = this.get()
+            const newIndex = (index + 1) % thingsToLoopOver.length
+            this.set({ index: newIndex })
+          }, 700)
+        }
+      },
+      clear() {
+        clearInterval(interval)
+        interval = undefined;
+        this.set({ index: -1 })
+      }
+    },
+    computed: {
+      copy: ({ index }) => thingsToLoopOver[index],
+    }
+  }
+</script>
+
